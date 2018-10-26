@@ -1,0 +1,56 @@
+﻿@model IList<CheckIn.Entitites.Entities.InvitationCard>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <link href="~/Content/InvitationsIndex.css" rel="stylesheet" type="text/css">
+}
+
+
+
+
+
+<div class="container" >
+    <div class="row">
+        <div class="col-sm-3"><button class="btn-primary" data-value = "All">All</button></div>
+        <div class="col-sm-3"><button class="btn-primary" data-value ="Weeding"> Wedding</button></div>
+        <div class="col-sm-3"><button class="btn-primary" data-value = "BabyShower"> Baby Shower</button></div>
+        <div class="col-sm-3"><button class="btn-primary" data-value = "BridalShower"> Bridal Shower</button></div>
+    </div>
+</div>
+<div class="container" id="invitationContainer" on>
+       
+</div>
+   
+
+
+
+@section scripts
+{   
+    <script>
+        $(document).ready(function () {
+          var url = "/invitations/paging/";
+          $.get(url,
+          function (data) {
+             $("#invitationContainer").html(data);
+          });
+           
+
+            $("button").on("click",
+                function() {
+
+                    var url = "/invitations/paging/1/?filterBy=" +  $(this).attr("data-value");
+                    $.get(url,
+                        function(data) {
+                            $("#invitationContainer").html(data);
+                        });
+
+                });
+          
+        });
+
+        
+
+        
+    </script>
+}

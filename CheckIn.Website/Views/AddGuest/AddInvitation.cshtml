@@ -1,0 +1,131 @@
+﻿@model CheckIn.Website.ViewModels.AddGuestViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <link href="~/Content/AddInvitation.css" rel="stylesheet" type="text/css" >
+    Html.EnableClientValidation(true);
+  
+
+}
+
+<h1 id="header">Add Invitation</h1>
+<br>
+
+@using (Html.BeginForm("AddInvatition", "AddGuest", FormMethod.Post))
+{
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    
+    <div class="form-group">
+            @Html.LabelFor(m => m.GroupName)
+            @Html.TextBoxFor(m => m.GroupName,new {@class="form-control"})
+            @Html.ValidationMessageFor(m => m.GroupName)
+        
+    </div>
+    <div class="Address">
+        <div class="form-group">
+            @Html.LabelFor(s => s.Address)
+
+            @Html.TextBoxFor(s => s.Address,new {@class="form-control"})
+            @Html.ValidationMessageFor(s => s.Address)
+        </div>     
+        <div class="form-row">
+            <div class="form-group col-sm-6">
+                @Html.LabelFor(c => c.City)
+                @Html.TextBoxFor(c => c.City,new {@class= "form-control" })
+                @Html.ValidationMessageFor(c => c.City)
+            </div>
+            <div class=" form-group col-sm-4">
+                @Html.LabelFor(s => s.StateId)
+                @Html.DropDownListFor(s => s.StateId, new SelectList(ViewBag.States, "Id", "NameOfTheState"), " ", new {@class="form-control"})
+                @Html.ValidationMessageFor(s => s.StateId)
+            </div>
+            <div class=" form-group col-sm-2">
+                @Html.LabelFor(z => z.ZipCode)
+                @Html.TextBoxFor(z => z.ZipCode, new {@class="form-control"})
+                @Html.ValidationMessageFor(z => z.ZipCode)
+            </div>
+        </div>
+       <button type="button" id="SaveAddress">Save</button>
+    </div>
+    <div id="AddGuestHiddenDiv" class="container"></div>
+   @Html.HiddenFor(s=>s.EventId)
+    <button type="submit">Submit</button>
+
+    <button type="button" id="addGuest">Add Guest!</button>
+    <button type="button" id="addAddress">Add Address!</button>
+}
+
+<script type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+        var num = 0;
+        $("#addGuest").click(function () {
+
+            $("#AddGuestHiddenDiv").append('<div class="jumbotron">\
+                                         <div class="form-row">\
+                                            <div class="col-sm-4">\
+                                                 <label for="Guest_'+ num + '__FirstName">First Name</label>\
+                                                  <input data-val="true" data-val-maxlength="The field First Name must be a string or array type with a maximum length of \'30\'."\
+                                                  <data-val-maxlength-max="30" data-val-required="The First Name field is required." id="Guest_0__FirstName" name="Guest['+ num + '].FirstName"\
+                                                    type="text" value="">\
+                                                 <span class="field-validation-valid" data-valmsg-for="Guest['+ num + '].FirstName" data-valmsg-replace="true"></span>\
+                                            </div>\
+                                            <div class="col-sm-4">\
+                                                    <label for="Guest_'+ num + '__LastName">Last Name</label>\
+                                                   <input  id="Guest_'+ num + '__FirstName" name="Guest[' + num + '].LastName" type="text" value="">\
+                                            </div>\
+                                             <div class="col-sm-2>\
+                                                     <label for="Guest_'+ num + '__IsExtraGuest">Bringing a Guest?</label>\
+                                                    <input data-val="true" data-val-required="The IsExtraGuest field is required."\
+                                                    id="Guest_'+ num + '__IsExtraGuest" name="Guest['+ num + '].IsExtraGuest" type="checkbox" value="true">\
+                                             </div>\
+                                            <div class="col-sm-2">\
+                                               <button type="button" class="DeleteGuestButton">Delete Guest</button>\
+                                               <input id="Guest_0__IsActive" name="Guest['+ num + '].IsActive" type="hidden" value="true">\
+                                             </div>\
+                                           </div>\
+                                             <div class="form-row ExtraGuest">\
+                                                <div class="col-sm-4">\
+                                                     <label for="Guest_'+ num + 'ExtraGuestFirstName">Guest First Name</label>\
+                                                     <input  id="Guest_'+ num + 'ExtraGuestFirstName" name="Guest[' + num + '].ExtraGuestFirstName" type="text" value="">\
+                                                </div>\
+                                                <div class="col-sm-4">\
+                                                        <label for="Guest_'+ num + '__ExtraGuestLastName">Guest Last Name</label>\
+                                                       <input  id="Guest_'+ num + '__ExtraGuestLastName" name="Guest[' + num + '].ExtraGuestLastName" type="text" value="">\
+                                                </div>\
+                                            </div>\
+                                         </div>');
+            num++;
+
+        });
+
+        $("#addAddress").click(function () {
+            $(".Address").css("display", "inline");
+            $("#addAddress").css("display", "none");
+        });
+        $("#SaveAddress").click(function () {
+            $(".Address").slideUp();
+            $("#addAddress").text("Edit Address");
+            $("#addAddress").css("display", "inline");
+        });
+
+        $('body').on('click', ':checkbox', function() {
+
+            $(this).parent().parent().next().toggle();
+            $(this).parent().parent().next().find('input[type=text]').val('');
+
+        });
+
+        $('body').on("click", ".DeleteGuestButton", function () {
+            $(this).parent().parent().parent().css("display", "none");
+            $(this).siblings('input').attr("value", "false");
+        });
+
+
+    });
+</script>
+
+
+

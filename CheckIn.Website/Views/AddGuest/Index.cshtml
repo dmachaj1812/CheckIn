@@ -1,0 +1,89 @@
+﻿@using System.Web.UI.WebControls
+@using CheckIn.Entitites.Entities
+@model List<CheckIn.Entitites.Entities.Invitation>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+<link href="~/Content/Invitation.css" rel="stylesheet" type="text/css">
+}
+
+<div class="jumbotron">
+    @Html.ActionLink("Add New Invitation", "AddInvitation", new {eventid = ViewBag.EventId})
+</div>
+
+
+@foreach (var invitation in Model as ICollection<Invitation>)
+{
+    <div class="jumbotron">
+        <div>
+            <h1>
+                @invitation.GroupName
+            </h1>
+        </div>
+        <div>
+            <p id="Address">@invitation.Address.AddressName</p>
+        </div>
+            <p><span class="CityStateZipSpan">@invitation.Address.CityName</span> <span class="CityStateZipSpan">@invitation.Address.State.NameOfTheState</span>
+               <span class="CityStateZipSpan">@invitation.Address.ZipCode</span></p>
+        <div>
+            <H3> List of Guests</H3>
+        </div>
+        @foreach( var guest in invitation.Guests as ICollection<Guest>) {
+            
+           
+
+                 <div class="container">
+                     <div class="row">
+                         <span>@guest.FirstName</span>
+                         <span>@guest.LastName</span>
+                     </div>
+                     <div class="row">
+                         @if (guest.IsExtraGuest == true)
+                         {
+                             if (string.IsNullOrWhiteSpace(guest.ExtraGuestFirstName))
+                             {
+                                 <span>with guest</span>
+                             }
+                             else
+                             {
+                                 <span> with @guest.ExtraGuestFirstName @guest.ExtraGuestLastName</span>
+                             }
+                         }
+                     </div>
+                 </div>
+             
+
+
+        }
+        @Html.ActionLink("Edit","Edit", new {id = invitation.Id})
+        <button class="DeleteInvitaion" value="@invitation.Id">Delete</button>
+    </div>
+   
+}
+@section scripts
+{
+    <Script>
+        $(document).ready(function() {
+            $('.DeleteInvitaion').on('click',
+                function (e) {
+                    var invitationId = parseInt($(this).val());
+                    var currentInvitation = $(this).parent();
+                    e.preventDefault();
+                    bootbox.confirm("Are you sure?", function(result)
+                    {
+                        if (result) {
+                            $.ajax({
+                                type: "POST",
+                                url: "/AddGuest/DeleteInvitation/",
+                                data: { id: invitationId },
+                                success: function() {
+                                    console.log(invitationId);
+                                }
+                            });
+                            currentInvitation.remove();
+                        }
+                    });
+        });
+        });
+    </Script>
+}

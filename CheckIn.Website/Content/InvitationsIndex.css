@@ -1,0 +1,23 @@
+﻿.container {
+    margin-top: 20px;
+}
+img{
+    height: 360px;
+    
+
+}
+.col-sm-4 {
+    width: 360px;
+    margin: 5px;
+    
+}
+button {
+    border: 1px solid black;
+    border-radius: 50%;
+    behavior: url(PIE.htc);
+    width: 100px;
+    height: 100px;
+    
+    
+}
+

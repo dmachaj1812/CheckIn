@@ -1,0 +1,13 @@
+﻿h1 {
+    text-align: center;
+}
+.jumbotron {
+    padding: 0;
+}
+.CityStateZipSpan {
+    margin: 10px;
+    text-align: center;
+}
+p {
+    text-align: center;
+}

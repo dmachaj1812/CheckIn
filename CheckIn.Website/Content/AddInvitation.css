@@ -1,0 +1,17 @@
+﻿.Address {
+    display: none;
+}
+.AddGuestHiddenDiv {
+    display: none;
+}
+
+h1 {
+    text-align: center;
+    color: blue;
+}
+.jumbotron {
+    text-align: center;
+}
+.ExtraGuest {
+    display: none;
+}

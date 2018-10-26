@@ -1,0 +1,94 @@
+﻿@using CheckIn.Entitites.Entities
+@model IList<CheckIn.Entitites.Entities.Event>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <link href="~/Content/AddEventIndex.css" rel="stylesheet" type="text/css">
+}
+
+
+    <div class="jumbotron">
+        @Html.ActionLink("Add New Event", "AddEvent", "AddEvent")
+    </div>
+@foreach (var eEvent in Model)
+{
+    var GuestCount = 0;
+    foreach (var invitation in eEvent.Invitations)
+    {
+        foreach (var guest in invitation.Guests)
+        {
+            if (guest.IsActive == true)
+            {
+                GuestCount++;
+            }
+            if (guest.IsExtraGuest == true)
+            {
+                GuestCount++;
+            }
+        }
+    }
+    <div class="jumbotron">
+        <h1>
+            @eEvent.EventType.EventTypeName
+        </h1>           
+        <div class="Address">
+            <div>
+                <p>@eEvent.Address.AddressName</p>
+            </div>
+            <div >
+                <p><span class="CityStateZipSpan">@eEvent.Address.CityName</span> <span class="CityStateZipSpan">@eEvent.Address.State.NameOfTheState</span>
+                    <span class="CityStateZipSpan">@eEvent.Address.ZipCode</span></p>
+            </div>
+            <div class="Guests">
+                <div class="container Inviations">
+                    <p>Currently you have @eEvent.Invitations.Count invitations</p>
+                </div>
+                <div class="container Guests">
+                    <p>Currently you have invited @GuestCount people</p>
+                </div>
+
+            </div>
+        </div>
+
+        @Html.ActionLink("View all invitations","Index","AddGuest", new{eventId = eEvent.Id}, new { @class = "btn btn-primary"} )
+        @Html.ActionLink("View All Guest","ListOfGuests","AddGuest", new {id = eEvent.Id}, new{@class= "btn btn-primary" })
+        <button class="DeleteEvent btn btn-primary" type="button" value="@eEvent.Id">Delete Event</button>
+        @Html.ActionLink("Edit","Edit","AddEvent", new {id = eEvent.Id}, new {@class="btn btn-primary"})
+
+    </div>
+}
+
+@section scripts
+{
+    <script>
+
+        $(document).ready(function() {
+
+            $(".DeleteEvent").on("click",
+                function (e) {
+                    var currentId = parseInt($(this).val());
+                    var currentDiv = $(this).parent();
+                    e.preventDefault();
+                    bootbox.confirm("Are you sure?",
+                        function(result) {
+                            if (result) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/AddEvent/DeleteEvent/" + currentId,
+                                    success: function() {
+                                        currentDiv.remove();
+                                    }
+                                });
+                            }
+                        });
+                });
+
+        });
+
+    </script>
+    
+
+}
+
+

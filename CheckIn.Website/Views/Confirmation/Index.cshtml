@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3> Please Enter 6 digit Number:</h3>
+<div class=container >
+    <div class="row">
+        <input value="6" class="DigitInput" id="input1" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" type="text" required/>
+        <input value="5" class="DigitInput" id="input2" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" type="text" />
+        <input value="7" class="DigitInput" id="input3" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" type="text" />
+        <input value="2" class="DigitInput" id="input4" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" type="text" />
+        <input value="8" class="DigitInput" id="input5" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" type="text" />
+        <input value="0" class="DigitInput" id="input6" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" type="text" />
+        <button id="findInvitation" class="btn btn-primary"> Find Invitation</button>
+    </div>
+</div>
+<H3>Please Enter Any Last Name</H3>
+<input id="LastName" type="text"/>
+<div id="invitaionTableContainer">
+</div>
+
+@section scripts
+{
+    <script>
+        
+        $(document).ready(function () {
+            
+            
+            $(".DigitInput").bind("input",
+                function() {
+                    var next = $(this).nextAll("input").first().focus();
+                    next.val("");
+                });
+
+
+            //Check Whethe input is valid
+
+
+            $("#findInvitation").on("click",
+                function() {
+                    var url = "/confirmation/_FindInvitation/" + getInvitationNumber() + "/" + $("#LastName").val();
+                    $.get(url,
+                        function(data) {
+                            $("#invitaionTableContainer").html(data);
+                        });
+                });
+
+           
+        });
+
+        
+        function getInvitationNumber() {
+            var invitationNumber = '';
+            for (var i = 1; i < 7; i++) {
+                
+                invitationNumber = invitationNumber + $("#input"+i).val();
+            }
+            return invitationNumber;
+        }
+       
+    </script>
+}

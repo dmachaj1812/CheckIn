@@ -1,0 +1,61 @@
+﻿@using CheckIn.Entitites.Entities
+@model CheckIn.Entitites.Entities.Invitation
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        
+
+        <div class="jumbotron">
+            <div>
+                <h1>
+                    @Model.GroupName
+                </h1>
+            </div>
+            <div>
+                <p id="Address">@Model.Address.AddressName</p>
+            </div>
+            <p><span class="CityStateZipSpan">@Model.Address.CityName</span> <span class="CityStateZipSpan">@Model.Address.State.NameOfTheState</span>
+                <span class="CityStateZipSpan">@Model.Address.ZipCode</span></p>
+            <div>
+                <H3> List of Guests</H3>
+            </div>
+            @foreach( var guest in Model.Guests as ICollection<Guest>) {
+            
+           
+
+                <div class="container">
+                    <div class="row">
+                        <span>@guest.FirstName</span>
+                        <span>@guest.LastName</span>
+                    </div>
+                    <div class="row">
+                        @if (guest.IsExtraGuest == true)
+                        {
+                            if (string.IsNullOrWhiteSpace(guest.ExtraGuestFirstName))
+                            {
+                                <span>with guest</span>
+                            }
+                            else
+                            {
+                                <span> with @guest.ExtraGuestFirstName @guest.ExtraGuestLastName</span>
+                            }
+                        }
+                    </div>
+                </div>
+             
+
+
+            }
+        </div>
+    </div>
+    <div class="modal-footer">
+        
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+    </div>
+</div>

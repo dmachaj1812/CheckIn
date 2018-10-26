@@ -1,0 +1,23 @@
+﻿.jumbotron {
+    text-align: center;
+    padding: 10px;
+    
+}
+
+h1 {
+    font-size: 5em;
+    
+}
+
+#Address {
+    font-size: 2em;
+    
+}
+.CityStateZipSpan {
+    margin: 10px;
+}
+p {
+    font-size: 1.8em;
+    
+    
+}
